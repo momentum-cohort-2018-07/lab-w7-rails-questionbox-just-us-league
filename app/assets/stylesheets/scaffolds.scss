@@ -3,8 +3,9 @@ body {
   color: #333;
   margin: 33px;
   font-family: verdana, arial, helvetica, sans-serif;
-  font-size: 13px;
+  font-size: 16px;
   line-height: 18px;
+  margin-top: 75px;
 }
 
 p, ol, ul, td {
@@ -20,16 +21,16 @@ pre {
 }
 
 a {
-  color: #000;
+  // color: #000;
 
-  &:visited {
-    color: #666;
-  }
+  // &:visited {
+  //   color: #666;
+  // }
 
-  &:hover {
-    color: #fff;
-    background-color: #000;
-  }
+  // &:hover {
+  //   color: #fff;
+  //   background-color: #000;
+  // }
 }
 
 th {
