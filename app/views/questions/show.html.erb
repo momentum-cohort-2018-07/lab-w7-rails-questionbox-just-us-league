@@ -1,3 +1,5 @@
+<%= render 'header' %>
+
 <p id="notice"><%= notice %></p>
 
 <h1>
@@ -33,8 +35,7 @@
     <% @question.answers.each do |answer| %>
       <tr>
         <td><%= answer.body %></td>
-        <td><%= answer.user %></td>
-        <td><%= answer.question %></td>
+        <td><%= answer.user.username %></td>
         <td><%= link_to 'Show', @question %></td>
         <td><%= link_to 'Edit', edit_question_answer_path(answer) %></td>
         <td><%= link_to 'Destroy', question_answer_path(@question, answer), method: :delete, data: { confirm: 'Are you sure?' } %></td>
