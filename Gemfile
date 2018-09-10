@@ -15,6 +15,10 @@ gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'mini_racer', platforms: :ruby
+# Use Bootstrap 4 for CSS styling
+gem 'bootstrap'
+gem 'sprockets-rails'
+gem 'jquery-rails'
 # Use Faker to generate fake data
 gem 'faker'
 # Use CoffeeScript for .coffee assets and views
