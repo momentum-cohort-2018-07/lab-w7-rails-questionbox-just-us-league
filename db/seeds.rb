@@ -41,3 +41,11 @@ end
     body: (Faker::Markdown.sandwich(6, 3) + '<br/>' + Faker::Markdown.inline_code + '<br/> ' + Faker::Markdown.sandwich(6, 3)),
   )
 end
+
+1500.times do
+  Vote.create(
+    value: [-1,1].sample,
+    user_id: 1 + rand(50), 
+    answer_id: 1 + rand(500)
+  )
+end
