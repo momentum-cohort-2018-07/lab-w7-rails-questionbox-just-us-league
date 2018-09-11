@@ -28,6 +28,59 @@
     </div>
   </div>
 
+<% if @question.accepted_answer %>
+  <h2>Accepted Answer</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Body</th>
+        <th>User</th>
+        <th colspan="3"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= @question.accepted_answer.body %></td>
+        <td><%= @question.accepted_answer.user.username %></td>
+        <td><%= link_to 'Edit', edit_question_answer_path(@question.accepted_answer) %></td>
+        <td><%= link_to 'Destroy', question_answer_path(@question, @question.accepted_answer),
+        method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Reject Answer',
+        question_answer_path(@question, @question.accepted_answer, {:format => :html, :question_accepted_id => nil}),
+        method: :patch %></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>
+
+<h2>Other Answers</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Body</th>
+      <th>User</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @question.answers.each do |answer| %>
+      <% unless answer.question_accepted_id %>
+        <tr>
+          <td><%= answer.body %></td>
+          <td><%= answer.user.username %></td>
+          <td><%= link_to 'Edit', edit_question_answer_path(answer) %></td>
+          <td><%= link_to 'Destroy', question_answer_path(@question, answer),
+          method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to 'Accept Answer',
+          question_answer_path(@question, answer, {:question_accepted_id => @question.id}),
+          method: :patch %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
 
   <h2 class='mt-3'>Answers</h2>
 
