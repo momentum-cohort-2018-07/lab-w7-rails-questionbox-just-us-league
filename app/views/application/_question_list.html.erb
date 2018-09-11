@@ -1,10 +1,16 @@
 <% questions.each do |question| %>
-  <div class='media text-muted pt-3 border-bottom border-gray'>
-    <p class="media-body pb-3 mb-0 small lh-125"><strong class="lead"><%= link_to question.title, question %></strong>
-        <br>
-        <%= question.body %>
-        <br>
-        <small class="media mr-1">Posted
+
+  <div class='py-2 border-bottom border-danger'>
+    <div class="card">
+      <div class="card-header">
+        <%= link_to question.title, question %>
+      </div>
+      <div class="card-body">
+        <p class="card-text"><%= question.body %></p>
+        <footer class="text-right"><%= link_to question.user.username, question.user, :class => '' %></footer>
+      </div>
+      <div class="card-footer">
+        <small>Last updated
           <% if (Time.now - question.updated_at).to_i < 60 %>
             <%= (Time.now - question.created_at).to_i %> sec. ago
           <% elsif (Time.now - question.updated_at).to_i < 3600 %>
@@ -14,12 +20,10 @@
           <% else %>
             <%= (Time.now - question.updated_at).to_i / (3600 * 24) %> days ago
           <% end %>
-          by <%= link_to question.user.username, question.user, :class => 'badge badge-secondary mt-1 mx-1'%>
-          | <%= link_to question.answers.count.to_s + ' answers(s)', question, :class => 'badge badge-success mt-1 mx-1' %>
-        
-        <%= link_to 'delete', question, method: :delete, data: {confirm: 'Are you sure?'} %> | 
-        <%= link_to 'edit', edit_question_path(question) %>
+          | <%= link_to question.answers.count.to_s + ' answers(s)', question, :class => 'badge badge-success p-2 mt-1 mx-1' %>
         </small>
-    </p>
+      </div>
+    </div>
   </div>
+
 <% end %>

@@ -1,5 +1,5 @@
-<strong>Votes Score: <%= answer.votes.map{|vote| vote.value}.inject(:+) %></strong>
+<strong>Votes Score: <%= answer.votes.map {|vote| vote.value}.inject(:+) %></strong>
 <% if current_user %>|
-<%= link_to 'Vote +1', question_answer_votes_path(answer.question, answer, {vote: {value: 1, user_id: current_user, answer_id: answer.id}}), method: :post  %> |
-<%= link_to 'Vote -1', question_answer_votes_path(answer.question, answer, {vote: {value: -1, user_id: current_user, answer_id: answer.id}}), method: :post  %>
+  <%= link_to 'Vote +1', question_answer_votes_path(answer.question, answer, {vote: {value: 1, user_id: current_user, answer_id: answer.id}}), method: :post %> |
+  <%= link_to 'Vote -1', question_answer_votes_path(answer.question, answer, {vote: {value: -1, user_id: current_user, answer_id: answer.id}}), method: :post %>
 <% end %>
