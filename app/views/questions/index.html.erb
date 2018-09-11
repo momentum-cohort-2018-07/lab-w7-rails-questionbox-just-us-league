@@ -1,5 +1,6 @@
 <%= render 'header' %>
 
+<div class='container'>
 <h1>Questions</h1>
 
 <% if notice %>
@@ -9,7 +10,7 @@
 <div>
   <%= render 'question_list', questions: @questions %>
 </div>
-
+</div>
 <br>
 
-<%= link_to 'New Question', new_question_path %>
+

@@ -56,7 +56,7 @@ class AnswersController < ApplicationController
   def destroy
     @answer.destroy
     respond_to do |format|
-      format.html { redirect_to answers_url, notice: 'Answer was successfully destroyed.' }
+      format.html { redirect_to @question, notice: 'Answer was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -65,6 +65,7 @@ class AnswersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_answer
       @answer = Answer.find(params[:id])
+      @question = @answer.question
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
