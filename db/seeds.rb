@@ -10,14 +10,20 @@ user.username = 'admin'
 user.email = 'admin@lifo.com'
 user.password = "admin"
 user.save
+directory = "./sailor_pictures/"
+filename = Dir.glob("*.jpg", base: directory).sample
+user.avatar.attach(io: File.open(File.join(directory, filename)), filename: filename)
 
 
 49.times do
-  User.create!(
+  @user = User.create!(
   username: Faker::Internet.unique.username,
   email: 'cdhagmann+lifo@gmail.com',
   password: "user"
   )
+  @directory = "./sailor_pictures/"
+  @filename = Dir.glob("*.jpg", base: @directory).sample
+  @user.avatar.attach(io: File.open(File.join(@directory, @filename)), filename: @filename)
 end
 
 250.times do
