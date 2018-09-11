@@ -42,6 +42,15 @@ end
   )
 end
 
+
+Question.all.each do |question|
+  if (question.answers.any? && rand() > 0.4)
+    answer = question.answers.sample
+    question_id = question.id
+    answer.update({question_accepted_id: question_id})
+  end
+end
+
 1500.times do
   Vote.create(
     value: [-1,1].sample,
