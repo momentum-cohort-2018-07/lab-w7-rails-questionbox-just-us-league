@@ -74,7 +74,7 @@
           <td><%= link_to 'Destroy', question_answer_path(@question, answer),
           method: :delete, data: { confirm: 'Are you sure?' } %></td>
           <td><%= link_to 'Accept Answer',
-          question_answer_path(@question, answer, {:format => :html, :question_accepted_id => @question.id}),
+          question_answer_path(@question, answer, {:question_accepted_id => @question.id}),
           method: :patch %></td>
         </tr>
       <% end %>

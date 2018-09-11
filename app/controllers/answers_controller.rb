@@ -42,9 +42,10 @@ class AnswersController < ApplicationController
   # PATCH/PUT /answers/1
   # PATCH/PUT /answers/1.json
   def update
-    logger.info request.format
     respond_to do |format|
-      unless Question.exists?(answer_params[:question_accepted_id])
+      if (answer_params[:question_accepted_id] != nil && Answer.exists?(question_accepted_id: answer_params[:question_accepted_id]))
+          format.html { redirect_to @answer.question }
+      else
         if @answer.update({question_accepted_id:nil}.merge(answer_params))
           format.html {redirect_to @answer.question, notice: 'Answer was successfully updated.' }
           format.json {render :show, status: :ok, location: @answer }
