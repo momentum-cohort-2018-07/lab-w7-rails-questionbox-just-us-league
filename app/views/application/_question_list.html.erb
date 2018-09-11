@@ -4,7 +4,12 @@
     <div class="card">
       <div class="card-body">
         <p class="card-text lead"><%= link_to question.title, question %></p>
-        <footer class="text-right"><%= link_to question.user.username, question.user, :class => '' %></footer>
+        <footer class="text-right">
+          <% if question.user.avatar.attached? %>
+            <%= image_tag(question.user.avatar, width: "40", class: "mr-2") %>
+          <% end %>
+          <%= link_to question.user.username, question.user, :class => '' %>
+        </footer>
       </div>
       <div class="card-footer">
         <small>Last updated
