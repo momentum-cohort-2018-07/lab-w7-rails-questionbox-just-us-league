@@ -2,15 +2,16 @@
 
   <div class='py-2 border-bottom border-danger'>
     <div class="card">
-        <div class="card-header">
-      <%= link_to question.title, question %>
-    </div>
+      <div class="card-header">
+        <%= link_to question.title, question %>
+      </div>
       <div class="card-body">
         <p class="card-text"><%= question.body %></p>
         <footer class="text-right"><%= link_to question.user.username, question.user, :class => '' %></footer>
       </div>
       <div class="card-footer">
-        <small>Last updated <% if (Time.now - question.updated_at).to_i < 60 %>
+        <small>Last updated
+          <% if (Time.now - question.updated_at).to_i < 60 %>
             <%= (Time.now - question.created_at).to_i %> sec. ago
           <% elsif (Time.now - question.updated_at).to_i < 3600 %>
             <%= (Time.now - question.created_at).to_i / 60 %> min. ago
@@ -20,7 +21,7 @@
             <%= (Time.now - question.updated_at).to_i / (3600 * 24) %> days ago
           <% end %>
           | <%= link_to question.answers.count.to_s + ' answers(s)', question, :class => 'badge badge-success p-2 mt-1 mx-1' %>
-          </small>
+        </small>
       </div>
     </div>
   </div>

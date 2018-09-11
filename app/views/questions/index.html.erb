@@ -1,15 +1,15 @@
 <%= render 'header' %>
 
 <div class='container'>
-<h1>Questions</h1>
+  <h1>Questions</h1>
 
-<% if notice %>
-  <p><%= notice %></p>
-<% end %>
+  <% if notice %>
+    <p><%= notice %></p>
+  <% end %>
 
-<div>
-  <%= render 'question_list', questions: @questions %>
-</div>
+  <div>
+    <%= render 'question_list', questions: @questions %>
+  </div>
 </div>
 <br>
 
