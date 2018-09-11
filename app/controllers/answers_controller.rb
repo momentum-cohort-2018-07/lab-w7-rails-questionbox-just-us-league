@@ -28,11 +28,13 @@ class AnswersController < ApplicationController
 
     respond_to do |format|
       if @answer.save
-        format.html { redirect_to @answer.question, notice: 'Answer was successfully created.' }
-        format.json { render :show, status: :created, location: @answer }
+        vote = Vote.new(value: 0, user_id: @answer.user_id, answer_id: @answer.id)
+        vote.save
+        format.html {redirect_to @answer.question, notice: 'Answer was successfully created.'}
+        format.json {render :show, status: :created, location: @answer}
       else
-        format.html { redirect_to @answer.question }
-        format.json { render json: @answer.errors, status: :unprocessable_entity }
+        format.html {redirect_to @answer.question}
+        format.json {render json: @answer.errors, status: :unprocessable_entity}
       end
     end
   end
@@ -44,8 +46,8 @@ class AnswersController < ApplicationController
     respond_to do |format|
       unless Question.exists?(answer_params[:question_accepted_id])
         if @answer.update({question_accepted_id:nil}.merge(answer_params))
-          format.html { redirect_to @answer.question, notice: 'Answer was successfully updated.' }
-          format.json { render :show, status: :ok, location: @answer }
+          format.html {redirect_to @answer.question, notice: 'Answer was successfully updated.' }
+          format.json {render :show, status: :ok, location: @answer }
         else
           format.html { redirect_to @answer.question }
           format.json { render json: @answer.errors, status: :unprocessable_entity }
@@ -59,19 +61,22 @@ class AnswersController < ApplicationController
   def destroy
     @answer.destroy
     respond_to do |format|
-      format.html { redirect_to answers_url, notice: 'Answer was successfully destroyed.' }
-      format.json { head :no_content }
+      format.html {redirect_to @question, notice: 'Answer was successfully destroyed.'}
+      format.json {head :no_content}
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_answer
-      @answer = Answer.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def answer_params
-      params.permit(:body, :user_id, :question_id, :question_accepted_id)
-    end
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_answer
+    @answer = Answer.find(params[:id])
+    @question = @answer.question
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def answer_params
+    params.permit(:body, :user_id, :question_id, :question_accepted_id)
+  end
 end

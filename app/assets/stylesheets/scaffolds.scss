@@ -5,7 +5,13 @@ body {
   font-family: verdana, arial, helvetica, sans-serif;
   font-size: 16px;
   line-height: 18px;
-  margin-top: 75px;
+  margin-top: 100px;
+}
+
+@include media-breakpoint-up(sm) {
+  body {
+    margin-top: 60px;
+  }
 }
 
 p, ol, ul, td {
@@ -18,19 +24,6 @@ pre {
   background-color: #eee;
   padding: 10px;
   font-size: 11px;
-}
-
-a {
-  // color: #000;
-
-  // &:visited {
-  //   color: #666;
-  // }
-
-  // &:hover {
-  //   color: #fff;
-  //   background-color: #000;
-  // }
 }
 
 th {

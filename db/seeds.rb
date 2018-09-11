@@ -12,26 +12,26 @@ user.password = "admin"
 user.save
 
 
-299.times do
-  user = User.new
-  user.username = Faker::Internet.username
-  user.email = 'cdhagmann+lifo@gmail.com'
-  user.password = "user"
-  user.save
+49.times do
+  User.create!(
+  username: Faker::Internet.unique.username,
+  email: 'cdhagmann+lifo@gmail.com',
+  password: "user"
+  )
 end
 
-25.times do
-  Post.create!  (
+250.times do
+  Question.create!(
     title: Faker::Lorem.sentence, 
-    description: Faker::Lorem.paragraph,
-    link: Faker::Internet.url,
-    user_id: 1 + rand(10),
+    body: (Faker::Markdown.sandwich(6, 3) + '<br>' + Faker::Markdown.inline_code + '<br>' + Faker::Markdown.sandwich(6, 3)),
+    user_id: 1 + rand(50)
   )
 end
 
 500.times do
-  Upvote.create(
-    user_id: 1 + rand(300), 
-    post_id: 1 + rand(25)
+  Answer.create(
+    user_id: 1 + rand(50), 
+    question_id: 1 + rand(250),
+    body: (Faker::Markdown.sandwich(6, 3) + '<br>' + Faker::Markdown.inline_code + '<br> ' + Faker::Markdown.sandwich(6, 3)),
   )
 end

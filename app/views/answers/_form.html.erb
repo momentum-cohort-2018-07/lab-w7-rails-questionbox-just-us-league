@@ -4,9 +4,9 @@
       <h2><%= pluralize(answer.errors.count, "error") %> prohibited this answer from being saved:</h2>
 
       <ul>
-      <% answer.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+        <% answer.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>
