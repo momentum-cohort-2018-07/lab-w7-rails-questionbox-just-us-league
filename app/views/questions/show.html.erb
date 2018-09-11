@@ -19,6 +19,8 @@
 <%= link_to 'Back', questions_path %> |
 <%= link_to 'Destroy', question_path(@question), method: :delete, data: { confirm: 'Are you sure?' } %>
 
+<h2>Accepted Answer: <%= @question.accepted_answer %></h2>
+
 <h2>Answers</h2>
 
 <table>
@@ -39,6 +41,7 @@
         <td><%= link_to 'Show', @question %></td>
         <td><%= link_to 'Edit', edit_question_answer_path(answer) %></td>
         <td><%= link_to 'Destroy', question_answer_path(@question, answer), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Accept Answer', question_answer_path(@question, answer, {:question_accepted_id => @question.id}), method: :patch %></td>
       </tr>
     <% end %>
   </tbody>
