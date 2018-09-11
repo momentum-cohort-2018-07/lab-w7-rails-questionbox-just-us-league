@@ -5,7 +5,7 @@
 <% end %>
 <div class='container'>
   <div class='pb-2 border-bottom border-danger'>
-    <div class="card text-white bg-danger mb-3">
+    <div class="card border-danger mb-3">
       <div class="card-header">
         <%= @question.title %>
       </div>
@@ -24,64 +24,15 @@
           <% else %>
             <%= (Time.now - @question.updated_at).to_i / (3600 * 24) %> days ago
           <% end %></small>
+              <div class="text-right">
+      <% if logged_in? && @question.answers.length == 0 && (current_user.id == @question.user_id || current_user.id == 1) %>
+        <%= link_to '<i class="fas fa-trash text-danger"></i>'.html_safe, @question, method: :delete, data: {confirm: 'Are you sure?'} %>
+
+        <%= link_to '<i class="fas fa-pen"></i>'.html_safe, edit_question_path(@question) %>
+      <% end %>
       </div>
     </div>
   </div>
-
-<% if @question.accepted_answer %>
-  <h2>Accepted Answer</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Body</th>
-        <th>User</th>
-        <th colspan="3"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><%= @question.accepted_answer.body %></td>
-        <td><%= @question.accepted_answer.user.username %></td>
-        <td><%= link_to 'Edit', edit_question_answer_path(@question.accepted_answer) %></td>
-        <td><%= link_to 'Destroy', question_answer_path(@question, @question.accepted_answer),
-        method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <td><%= link_to 'Reject Answer',
-        question_answer_path(@question, @question.accepted_answer, {:format => :html, :question_accepted_id => nil}),
-        method: :patch %></td>
-      </tr>
-    </tbody>
-  </table>
-<% end %>
-
-<h2>Other Answers</h2>
-
-<table>
-  <thead>
-    <tr>
-      <th>Body</th>
-      <th>User</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @question.answers.each do |answer| %>
-      <% unless answer.question_accepted_id %>
-        <tr>
-          <td><%= answer.body %></td>
-          <td><%= answer.user.username %></td>
-          <td><%= link_to 'Edit', edit_question_answer_path(answer) %></td>
-          <td><%= link_to 'Destroy', question_answer_path(@question, answer),
-          method: :delete, data: { confirm: 'Are you sure?' } %></td>
-          <td><%= link_to 'Accept Answer',
-          question_answer_path(@question, answer, {:question_accepted_id => @question.id}),
-          method: :patch %></td>
-        </tr>
-      <% end %>
-    <% end %>
-  </tbody>
-</table>
-
   <h2 class='mt-3'>Answers</h2>
 
   <% if current_user %>
@@ -101,35 +52,78 @@
       <% end %>
     </div>
   <% end %>
+  <% if @question.has_accepted_answer? %>
+  <div class='py-2 border-bottom border-danger' id='answer_<%= @question.accepted_answer.id %>'>
+    <div class="card border-primary">
+      <div class="card-body">
+        <div class="card-text ml-2"><%= markdown(@question.accepted_answer.body).html_safe %></div>
+        <footer class="text-right "><%= link_to "@" + @question.accepted_answer.user.username, @question.accepted_answer.user, :class => 'text-dark' %></footer>
+      </div>
+      <div class="card-footer d-flex align-items-center">
+      <% if  logged_in? && current_user.id == @question.user_id %>
+      <%= link_to '<i class="fas fa-check-circle text-success mr-3" style="font-size:3rem"></i>'.html_safe,
+        question_answer_path(@question, @question.accepted_answer, {:question_accepted_id => nil}),
+        method: :patch %>
+      <% end %>
+        <%= render 'votes', answer: @question.accepted_answer %>
+        <small class='ml-3'>Last updated
+          <% if (Time.now - @question.accepted_answer.updated_at).to_i < 60 %>
+            <%= (Time.now - @question.accepted_answer.created_at).to_i %> sec. ago
+          <% elsif (Time.now - @question.accepted_answer.updated_at).to_i < 3600 %>
+            <%= (Time.now - @question.accepted_answer.created_at).to_i / 60 %> min. ago
+          <% elsif (Time.now - @question.accepted_answer.updated_at).to_i < (3600 * 48) %>
+            <%= (Time.now - @question.accepted_answer.created_at).to_i / 3600 %> hr. ago
+          <% else %>
+            <%= (Time.now - @question.accepted_answer.updated_at).to_i / (3600 * 24) %> days ago
+          <% end %></small>
+      </div>
+    </div>
+
+  </div>
+  <% end %>
 
   <% @answers.sort_by(&:score).reverse.each do |answer| %>
 
-    <div class='py-2 border-bottom border-danger' id='answer_<%= answer.id %>'>
-      <% if false %>
-        <div class="card text-white bg-primary">
-      <% else %>
-        <div class="card">
+    <% unless answer.question_accepted_id %>
+      <div class='py-2 border-bottom border-danger' id='answer_<%= answer.id %>'>
+        <% if answer.accepted? %>
+          <div class="card text-white bg-primary">
+        <% else %>
+          <div class="card">
+        <% end %>
+        <div class="card-body">
+          <div class="card-text ml-2"><%= markdown(answer.body).html_safe %></div>
+          <footer class="text-right "><%= link_to "@" + answer.user.username, answer.user, :class => 'text-dark' %></footer>
+        </div>
+        <div class="card-footer d-flex align-items-center">
+        <% if logged_in? && current_user.id == @question.user_id %>
+        <%= link_to '<i class="fas fa-check-circle text-grey-dark mr-2"></i>'.html_safe,
+          question_answer_path(@question, answer, {:question_accepted_id => @question.id}),
+          method: :patch %>
+        <% end %>
+          <%= render 'votes', answer: answer %>
+          <small class='ml-3'>Last updated
+            <% if (Time.now - answer.updated_at).to_i < 60 %>
+              <%= (Time.now - answer.created_at).to_i %> sec. ago
+            <% elsif (Time.now - answer.updated_at).to_i < 3600 %>
+              <%= (Time.now - answer.created_at).to_i / 60 %> min. ago
+            <% elsif (Time.now - answer.updated_at).to_i < (3600 * 48) %>
+              <%= (Time.now - answer.created_at).to_i / 3600 %> hr. ago
+            <% else %>
+              <%= (Time.now - answer.updated_at).to_i / (3600 * 24) %> days ago
+            <% end %>
+          </small>
+              <div class="text-right">
+    <div class="d-flex justify-content-center align-items-center flex-column align-center px-3">
+      <% if logged_in? && (current_user.id == answer.user_id || current_user.id == 1) %>
+        <%= link_to '<i class="fas fa-trash text-danger"></i>'.html_safe, question_answer_path(@question, answer), method: :delete, data: {confirm: 'Are you sure?'} %>
       <% end %>
-      <div class="card-body">
-        <div class="card-text ml-2"><%= markdown(answer.body).html_safe %></div>
-        <footer class="text-right "><%= link_to "@" + answer.user.username, answer.user, :class => 'text-dark' %></footer>
-      </div>
-      <div class="card-footer d-flex align-items-center">
-      <%= render 'votes', answer: answer %>
-        <small class='ml-3'>Last updated
-          <% if (Time.now - answer.updated_at).to_i < 60 %>
-            <%= (Time.now - answer.created_at).to_i %> sec. ago
-          <% elsif (Time.now - answer.updated_at).to_i < 3600 %>
-            <%= (Time.now - answer.created_at).to_i / 60 %> min. ago
-          <% elsif (Time.now - answer.updated_at).to_i < (3600 * 48) %>
-            <%= (Time.now - answer.created_at).to_i / 3600 %> hr. ago
-          <% else %>
-            <%= (Time.now - answer.updated_at).to_i / (3600 * 24) %> days ago
-          <% end %></small>
-      </div>
-      </div>
+    </div>
+        </div>
+        </div>
 
-      </div>
+        </div>
+    <% end %>
   <% end %>
   </div>
 </div>

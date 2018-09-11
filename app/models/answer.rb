@@ -7,4 +7,8 @@ class Answer < ApplicationRecord
   def score
     votes.map {|vote| vote.value}.inject(:+) || 0
   end
+
+  def accepted?
+    !!question_accepted_id
+  end
 end
