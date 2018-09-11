@@ -31,7 +31,7 @@ class AnswersController < ApplicationController
         format.html { redirect_to @answer.question, notice: 'Answer was successfully created.' }
         format.json { render :show, status: :created, location: @answer }
       else
-        format.html { render :new }
+        format.html { redirect_to @answer.question }
         format.json { render json: @answer.errors, status: :unprocessable_entity }
       end
     end
@@ -40,13 +40,16 @@ class AnswersController < ApplicationController
   # PATCH/PUT /answers/1
   # PATCH/PUT /answers/1.json
   def update
+    logger.info request.format
     respond_to do |format|
-      if @answer.update({question_accepted_id:nil}.merge(answer_params))
-        format.html { redirect_to @answer.question, notice: 'Answer was successfully updated.' }
-        format.json { render :show, status: :ok, location: @answer }
-      else
-        format.html { render :edit }
-        format.json { render json: @answer.errors, status: :unprocessable_entity }
+      unless Question.exists?(answer_params[:question_accepted_id])
+        if @answer.update({question_accepted_id:nil}.merge(answer_params))
+          format.html { redirect_to @answer.question, notice: 'Answer was successfully updated.' }
+          format.json { render :show, status: :ok, location: @answer }
+        else
+          format.html { redirect_to @answer.question }
+          format.json { render json: @answer.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
