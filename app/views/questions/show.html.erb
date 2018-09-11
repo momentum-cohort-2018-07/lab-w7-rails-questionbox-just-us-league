@@ -53,9 +53,9 @@
       </div>
     <% end %>
     <% if @question.has_accepted_answer? %>
-      <div class='py-2 border-bottom border-danger' id='answer_<%= @question.accepted_answer.id %>'>
+      <div class='py-2 border-bottom border-danger' id="answer_<%= @question.accepted_answer.id %>">
         <div class="card border-primary">
-          <div class="card-body">
+          <div class="card-body" >
             <div class="card-text ml-2"><%= markdown(@question.accepted_answer.body).html_safe %></div>
             <footer class="text-right "><%= link_to "@" + @question.accepted_answer.user.username, @question.accepted_answer.user, :class => 'text-dark' %></footer>
           </div>
