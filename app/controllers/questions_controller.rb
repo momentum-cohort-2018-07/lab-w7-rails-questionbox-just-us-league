@@ -10,6 +10,11 @@ class QuestionsController < ApplicationController
   # GET /questions/1
   # GET /questions/1.json
   def show
+    @answers = Answer
+    .left_joins(:votes)
+    .group(:id)
+    .order('SUM(votes.value) DESC')
+    .where(question_id: @question.id)
   end
 
   # GET /questions/new

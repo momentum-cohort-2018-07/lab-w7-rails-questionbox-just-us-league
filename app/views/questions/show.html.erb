@@ -32,13 +32,14 @@
   </thead>
 
   <tbody>
-    <% @question.answers.each do |answer| %>
+    <% @answers.each do |answer| %>
       <tr>
         <td><%= answer.body %></td>
         <td><%= answer.user.username %></td>
         <td><%= link_to 'Show', @question %></td>
         <td><%= link_to 'Edit', edit_question_answer_path(answer) %></td>
         <td><%= link_to 'Destroy', question_answer_path(@question, answer), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= render partial: "votes", locals: {answer: answer} %></td>
       </tr>
     <% end %>
   </tbody>

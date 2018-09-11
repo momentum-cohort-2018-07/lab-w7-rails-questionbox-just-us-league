@@ -28,6 +28,8 @@ class AnswersController < ApplicationController
 
     respond_to do |format|
       if @answer.save
+        vote = Vote.new(value: 0, user_id: @answer.user_id, answer_id: @answer.id)
+        vote.save
         format.html { redirect_to @answer.question, notice: 'Answer was successfully created.' }
         format.json { render :show, status: :created, location: @answer }
       else
