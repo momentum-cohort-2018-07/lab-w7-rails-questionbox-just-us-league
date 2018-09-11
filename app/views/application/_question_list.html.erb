@@ -27,6 +27,8 @@
                           <div class="text-right">
               <% if logged_in? && (current_user.id == question.user_id || current_user.id == 1) %>
                 <%= link_to '<i class="fas fa-trash text-danger"></i>'.html_safe, question, method: :delete, data: {confirm: 'Are you sure?'} %>
+              <%end%>
+              <% if logged_in? && (current_user.id == question.user_id || current_user.id == 1)  && question.answers.length == 0%>  
                 <%= link_to '<i class="fas fa-pen"></i>'.html_safe, edit_question_path(question) %>
                 <br>
               <% end %>

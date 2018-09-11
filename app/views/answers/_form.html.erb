@@ -1,32 +1,13 @@
-<%= form_with(model: answer, local: true) do |form| %>
-  <% if answer.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(answer.errors.count, "error") %> prohibited this answer from being saved:</h2>
+      <%= form_with(url: question_answers_path(answer.question).html_safe, local: true, :html => {:class => ''}) do |form| %>
 
-      <ul>
-        <% answer.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+        <div class="form-group">
+          <%= form.text_area :body, :class => 'form-control', value: answer.body %>
+        </div>
 
-  <div class="field">
-    <%= form.label :body %>
-    <%= form.text_area :body %>
-  </div>
+        <%= form.hidden_field :user_id, :value => current_user.id %>
+        <%= form.hidden_field :question_id, :value => answer.question.id %>
 
-  <div class="field">
-    <%= form.label :user_id %>
-    <%= form.text_field :user_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :question_id %>
-    <%= form.text_field :question_id %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
+        <div class="actions">
+          <%= form.submit :class => "btn btn-danger btn-block" %>
+        </div>
+      <% end %>
