@@ -48,7 +48,7 @@
   </div>
 <% end %>
 
-<% @question.answers.sort_by(&:created_at).each do |answer| %>
+<% @answers.sort_by(&:created_at).each do |answer| %>
 
   <div class='py-2 border-bottom border-danger'>
     <% if false %>

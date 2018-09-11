@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   resources :questions do
-    resources :answers
+    resources :answers do
+      resources :votes, only: [:create]
+    end
   end
   resources :users
   resource :session, only: [:new, :create, :destroy]
