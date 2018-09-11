@@ -102,20 +102,21 @@
     </div>
   <% end %>
 
-  <% @answers.sort_by(&:created_at).each do |answer| %>
+  <% @answers.sort_by(&:score).reverse.each do |answer| %>
 
-    <div class='py-2 border-bottom border-danger'>
+    <div class='py-2 border-bottom border-danger' id='answer_<%= answer.id %>'>
       <% if false %>
         <div class="card text-white bg-primary">
       <% else %>
         <div class="card">
       <% end %>
       <div class="card-body">
-        <p class="card-text"><%= markdown(answer.body).html_safe %></p>
+        <div class="card-text ml-2"><%= markdown(answer.body).html_safe %></div>
         <footer class="text-right "><%= link_to "@" + answer.user.username, answer.user, :class => 'text-dark' %></footer>
       </div>
-      <div class="card-footer">
-        <small>Last updated
+      <div class="card-footer d-flex align-items-center">
+      <%= render 'votes', answer: answer %>
+        <small class='ml-3'>Last updated
           <% if (Time.now - answer.updated_at).to_i < 60 %>
             <%= (Time.now - answer.created_at).to_i %> sec. ago
           <% elsif (Time.now - answer.updated_at).to_i < 3600 %>
