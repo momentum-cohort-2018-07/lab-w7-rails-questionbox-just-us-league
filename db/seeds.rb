@@ -23,7 +23,7 @@ end
 250.times do
   Question.create!(
     title: Faker::Lorem.sentence, 
-    body: (Faker::Markdown.sandwich(6, 3) + Faker::Markdown.block_code + Faker::Markdown.inline_code + Faker::Markdown.sandwich(6, 3)),
+    body: (Faker::Markdown.sandwich(6, 3) + '<br>' + Faker::Markdown.inline_code + '<br>' + Faker::Markdown.sandwich(6, 3)),
     user_id: 1 + rand(50)
   )
 end
@@ -32,6 +32,6 @@ end
   Answer.create(
     user_id: 1 + rand(50), 
     question_id: 1 + rand(250),
-    body: (Faker::Markdown.sandwich(6, 3) + Faker::Markdown.block_code + Faker::Markdown.inline_code  + Faker::Markdown.sandwich(6, 3)),
+    body: (Faker::Markdown.sandwich(6, 3) + '<br>' + Faker::Markdown.inline_code + '<br> ' + Faker::Markdown.sandwich(6, 3)),
   )
 end
