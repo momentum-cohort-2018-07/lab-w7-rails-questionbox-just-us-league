@@ -12,4 +12,11 @@ class VotesController < ApplicationController
     end
     redirect_to question_path(@vote.answer.question, anchor: 'answer_' + @vote.answer.id.to_s)
   end
+
+    def destroy
+    @vote = Vote.find(params[:id])
+    @vote.destroy
+    redirect_to question_path(@vote.answer.question, anchor: 'answer_' + @vote.answer.id.to_s)
+  end
+
 end

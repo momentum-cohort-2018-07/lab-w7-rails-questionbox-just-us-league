@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :questions do
     resources :answers do
-      resources :votes, only: [:create]
+      resources :votes, only: [:create, :destroy]
     end
   end
   resources :users
