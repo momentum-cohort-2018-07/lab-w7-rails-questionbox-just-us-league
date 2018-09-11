@@ -30,6 +30,7 @@ class AnswersController < ApplicationController
       if @answer.save
         vote = Vote.new(value: 0, user_id: @answer.user_id, answer_id: @answer.id)
         vote.save
+        UserMailer.with(user: @answer.question.user, url: question_url(@answer.question, anchor:'answer_' + @answer.id.to_s)).alert_email.deliver_now
         format.html {redirect_to @answer.question, notice: 'Answer was successfully created.'}
         format.json {render :show, status: :created, location: @answer}
       else
