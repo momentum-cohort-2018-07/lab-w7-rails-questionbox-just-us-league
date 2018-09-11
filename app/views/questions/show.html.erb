@@ -19,30 +19,51 @@
 <%= link_to 'Back', questions_path %> |
 <%= link_to 'Destroy', question_path(@question), method: :delete, data: { confirm: 'Are you sure?' } %>
 
-<h2>Accepted Answer: <%= @question.accepted_answer %></h2>
+<% if @question.accepted_answer %>
+  <h2>Accepted Answer</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Body</th>
+        <th>User</th>
+        <th colspan="3"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= @question.accepted_answer.body %></td>
+        <td><%= @question.accepted_answer.user.username %></td>
+        <td><%= link_to 'Edit', edit_question_answer_path(@question.accepted_answer) %></td>
+        <td><%= link_to 'Destroy', question_answer_path(@question, @question.accepted_answer), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <!-- this next line doesn't seem to be passing the param properly, and I'm not sure why -->
+        <td><%= link_to 'Reject Answer', question_answer_path(@question, @question.accepted_answer, {:question_accepted_id => nil}), method: :patch %></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>
 
-<h2>Answers</h2>
+<h2>Other Answers</h2>
 
 <table>
   <thead>
     <tr>
       <th>Body</th>
       <th>User</th>
-      <th>Question</th>
       <th colspan="3"></th>
     </tr>
   </thead>
 
   <tbody>
     <% @question.answers.each do |answer| %>
-      <tr>
-        <td><%= answer.body %></td>
-        <td><%= answer.user.username %></td>
-        <td><%= link_to 'Show', @question %></td>
-        <td><%= link_to 'Edit', edit_question_answer_path(answer) %></td>
-        <td><%= link_to 'Destroy', question_answer_path(@question, answer), method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <td><%= link_to 'Accept Answer', question_answer_path(@question, answer, {:question_accepted_id => @question.id}), method: :patch %></td>
-      </tr>
+      <% unless answer.question_accepted_id %>
+        <tr>
+          <td><%= answer.body %></td>
+          <td><%= answer.user.username %></td>
+          <td><%= link_to 'Edit', edit_question_answer_path(answer) %></td>
+          <td><%= link_to 'Destroy', question_answer_path(@question, answer), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to 'Accept Answer', question_answer_path(@question, answer, {:question_accepted_id => @question.id}), method: :patch %></td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>
