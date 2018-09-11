@@ -10,5 +10,6 @@ class VotesController < ApplicationController
         @vote.save
       end
     end
+    redirect_to question_path(@vote.answer.question, anchor: 'answer_' + @vote.answer.id.to_s)
   end
 end

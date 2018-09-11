@@ -49,9 +49,9 @@
     </div>
   <% end %>
 
-  <% @answers.sort_by(&:created_at).each do |answer| %>
+  <% @answers.sort_by(&:score).reverse.each do |answer| %>
 
-    <div class='py-2 border-bottom border-danger'>
+    <div class='py-2 border-bottom border-danger' id='answer_<%= answer.id %>'>
       <% if false %>
         <div class="card text-white bg-primary">
       <% else %>
@@ -72,6 +72,7 @@
           <% else %>
             <%= (Time.now - answer.updated_at).to_i / (3600 * 24) %> days ago
           <% end %></small>
+          <div class='text-right'><%= render 'votes', answer: answer %></div>
       </div>
       </div>
 
